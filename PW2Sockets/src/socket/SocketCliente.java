@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class SocketCliente {
 	   public static void main(String[] args) 
 	           throws UnknownHostException, IOException {
-	     Socket cliente = new Socket("10.10.1.203", 1940);
+	     Socket cliente = new Socket("10.10.1.203", 2000);
 	     System.out.println("O cliente se conectou ao servidor!");
 	     
 	     Scanner teclado = new Scanner(System.in);
