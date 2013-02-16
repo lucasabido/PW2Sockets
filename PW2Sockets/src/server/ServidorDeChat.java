@@ -25,7 +25,9 @@ public class ServidorDeChat extends Thread {
 	    // objeto da classe Socket, que é porta da comunicação.
 	    System.out.print("Esperando alguem se conectar...");
 	    Socket conexao = s.accept();
-	    System.out.println(" Conectou!");
+	    System.out.println("Nova conexão com o cliente " +   
+	 	       s.getInetAddress().getHostAddress()
+	 	     );
 	// cria uma nova thread para tratar essa conexão
 	Thread t = new ServidorDeChat(conexao);
 	t.start();
@@ -48,6 +50,10 @@ public class ServidorDeChat extends Thread {
 	public ServidorDeChat(Socket s) {
 	  conexao = s;
 	 }
+	
+	
+	
+	
 	 // execução da thread
 	 public void run() {
 	  try {
@@ -57,15 +63,7 @@ public class ServidorDeChat extends Thread {
 	   PrintStream saida = new 
 	        PrintStream(conexao.getOutputStream());
 	   saida.println("Conexão efetuada com o Servidor");
-	   // primeiramente, espera-se pelo nome do cliente
-	   meuNome = entrada.readLine();
-	   // agora, verifica se string recebida é valida, pois
-	   // sem a conexão foi interrompida, a string é null.
-	   // Se isso ocorrer, deve-se terminar a execução.
-	   if (meuNome == null) {return;}
-	   // Uma vez que se tem um cliente conectado e conhecido,
-	   // coloca-se fluxo de saída para esse cliente no vetor de
-	   // clientes conectados.
+
 	   clientes.add(saida);
 	   // clientes é objeto compartilhado por várias threads!
 	   // De acordo com o manual da API, os métodos são
@@ -80,7 +78,7 @@ public class ServidorDeChat extends Thread {
 	   String linha = entrada.readLine();
 	   while (linha != null && !(linha.trim().equals(""))) {
 	    // reenvia a linha para todos os clientes conectados
-	    sendToAll(saida, " disse: ", linha);
+	    saida.println("Recebemos sua String: " + linha);
 	 // espera por uma nova linha.
 	    linha = entrada.readLine();
 	   }
@@ -98,7 +96,7 @@ public class ServidorDeChat extends Thread {
 	 // enviar uma mensagem para todos, menos para o próprio
 	public void sendToAll(PrintStream saida, String acao,
 	  String linha) throws IOException {
-		 System.out.print(linha);
+		 System.out.println(meuNome + acao + linha);
 	  Enumeration e = clientes.elements();
 	  while (e.hasMoreElements()) {
 	   // obtém o fluxo de saída de um dos clientes
