@@ -56,6 +56,7 @@ public class ServidorDeChat extends Thread {
 	        InputStreamReader(conexao.getInputStream()));
 	   PrintStream saida = new 
 	        PrintStream(conexao.getOutputStream());
+	   saida.println("Conexão efetuada com o Servidor");
 	   // primeiramente, espera-se pelo nome do cliente
 	   meuNome = entrada.readLine();
 	   // agora, verifica se string recebida é valida, pois
